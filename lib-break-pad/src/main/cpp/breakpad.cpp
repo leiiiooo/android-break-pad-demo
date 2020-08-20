@@ -13,7 +13,6 @@
 #define ALOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
 #define ALOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
-
 bool DumpCallback(const google_breakpad::MinidumpDescriptor &descriptor,
                   void *context,
                   bool succeeded) {
@@ -24,13 +23,13 @@ bool DumpCallback(const google_breakpad::MinidumpDescriptor &descriptor,
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_sample_breakpad_BreakpadInit_initBreakpadNative(JNIEnv *env, jclass type, jstring path_) {
-const char *path = env->GetStringUTFChars(path_, 0);
+Java_com_leiiiooo_breakpad_BreakPadHelper_00024Companion_initBreakPadNative(JNIEnv *env, jobject thiz, jstring path_) {
+  const char *path = env->GetStringUTFChars(path_, 0);
 
-google_breakpad::MinidumpDescriptor descriptor(path);
-static google_breakpad::ExceptionHandler eh(descriptor, NULL, DumpCallback, NULL, true, -1);
+  google_breakpad::MinidumpDescriptor descriptor(path);
+  static google_breakpad::ExceptionHandler eh(descriptor, NULL, DumpCallback, NULL, true, -1);
 
-env->ReleaseStringUTFChars(path_, path);
+  env->ReleaseStringUTFChars(path_, path);
 }
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
