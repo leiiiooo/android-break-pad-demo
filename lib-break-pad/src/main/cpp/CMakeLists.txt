@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 3.4.1)
+project(breakpad-lib)
+
+set(ENABLE_INPROCESS ON)
+set(ENABLE_OUTOFPROCESS ON)
+set(ENABLE_LIBCORKSCREW ON)
+set(ENABLE_LIBUNWIND ON)
+set(ENABLE_LIBUNWINDSTACK ON)
+set(ENABLE_CXXABI ON)
+set(ENABLE_STACKSCAN ON)
+if (${ENABLE_INPROCESS})
+    add_definitions(-DENABLE_INPROCESS)
+endif ()
+if (${ENABLE_OUTOFPROCESS})
+    add_definitions(-DENABLE_OUTOFPROCESS)
+endif ()
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=implicit-function-declaration")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ")
+
+# breakpad
+include_directories(../../../../breakpad-support/src ../../../../breakpad-support/src/common/android/include)
+add_subdirectory(../../../../breakpad-support build)
+list(APPEND LINK_LIBRARIES breakpad)
+add_library(breakpad-lib SHARED
+        breakpad.cpp)
+target_link_libraries(breakpad-lib ${LINK_LIBRARIES}
+        log)
